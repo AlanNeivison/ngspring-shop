@@ -7,5 +7,6 @@ import com.aryan.ecom.dto.ProductDto;
 public interface CustomerProductService {
 	List<ProductDto> getAllProducts();
 
+	List<ProductDto> getAllProductsByName(String name);
 
 }
