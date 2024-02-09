@@ -31,4 +31,9 @@ public class AdminProductController {
 
 	}
 
+	@GetMapping("/products")
+	public ResponseEntity<List<ProductDto>> getAllProduct() {
+		List<ProductDto> productDtos = adminProductService.getAllProducts();
+		return ResponseEntity.ok(productDtos);
+	}
 }
