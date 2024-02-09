@@ -9,4 +9,7 @@ public interface AdminProductService {
 	ProductDto addProduct(ProductDto productDto) throws Exception;
 	
 	List<ProductDto> getAllProducts();
+	
+	List<ProductDto> getAllProductsByName(String name);
+	
 }

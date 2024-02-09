@@ -41,4 +41,8 @@ public class AdminProductServiceImpl implements AdminProductService {
 		return products.stream().map(Product::getDto).collect(Collectors.toList());
 	}
 
+	public List<ProductDto> getAllProductsByName(String name) {
+		List<Product> products = productRepository.findAllByNameContaining(name);
+		return products.stream().map(Product::getDto).collect(Collectors.toList());
+	}
 }
