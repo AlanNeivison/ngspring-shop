@@ -34,6 +34,12 @@ public class WebSecurityConfiguration {
 	@SuppressWarnings("deprecation")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+//		return http.csrf(csrf -> csrf.disable())
+//				.authorizeHttpRequests(
+//						requests -> requests.requestMatchers("/authenticate", "/sign-up", "/order/**").permitAll())
+//				.authorizeRequests(requests -> requests.requestMatchers("/api/**").authenticated())
+//				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).build();
 		return http.csrf(csrf -> csrf.disable())
 	            .authorizeRequests(auth -> auth
 	            		.requestMatchers(mvc.pattern("/authenticate"),mvc.pattern("/sign-up"),mvc.pattern("/order/**")).permitAll()
