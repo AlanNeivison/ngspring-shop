@@ -45,4 +45,14 @@ public class AdminProductServiceImpl implements AdminProductService {
 		List<Product> products = productRepository.findAllByNameContaining(name);
 		return products.stream().map(Product::getDto).collect(Collectors.toList());
 	}
+
+	public boolean deleteProduct(Long id) {
+		Optional<Product> productOptional = productRepository.findById(id);
+		if (productOptional.isPresent()) {
+			productRepository.deleteById(id);
+			return true;
+		}
+		
+		return false;
+	}
 }
