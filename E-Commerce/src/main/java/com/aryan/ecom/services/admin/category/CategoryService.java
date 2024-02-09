@@ -7,4 +7,5 @@ import com.aryan.ecom.model.Category;
 
 public interface CategoryService {
 	 Category createCategory(CategoryDto categoryDto);
+	 List<Category> getAllCategory();
 }
