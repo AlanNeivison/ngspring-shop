@@ -29,7 +29,7 @@ public class Product {
 	
 	private String name;
 	
-	private String price;
+	private Long price;
 	
 	@Lob
 	@Column(columnDefinition = "TEXT")
