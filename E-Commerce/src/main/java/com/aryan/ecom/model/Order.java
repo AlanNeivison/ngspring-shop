@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.Cascade;
 
+import com.aryan.ecom.dto.OrderDto;
 import com.aryan.ecom.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
@@ -56,5 +57,21 @@ public class Order {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	private List<CartItems> cartItems;
+	
+	public OrderDto getOrderDto() {
+		OrderDto orderDto = new OrderDto();
+		orderDto.setOrderDescription(orderDescription);
+		orderDto.setAddress(address);
+		orderDto.setTrackingId(trackingId);
+		orderDto.setAmount(amount);
+		orderDto.setTotalAmount(totalAmount);
+		orderDto.setDate(date);
+		orderDto.setOrderStatus(orderStatus);
+		orderDto.setUserName(user.getName());
+		if(coupon!=null) {
+			orderDto.setCouponName(coupon.getName());
+		}
+		return orderDto;
+	}
 
 }
