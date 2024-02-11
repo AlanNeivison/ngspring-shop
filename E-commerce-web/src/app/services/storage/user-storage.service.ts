@@ -18,7 +18,8 @@ export class UserStorageService {
     localStorage.removeItem(USER);
     localStorage.setItem(USER, JSON.stringify(user));
   }
-  static getToken(): string {
+  static getToken(): any {
+    if(typeof window!== 'undefined')
     return localStorage.getItem(TOKEN);
   }
   static getUser(): any {
