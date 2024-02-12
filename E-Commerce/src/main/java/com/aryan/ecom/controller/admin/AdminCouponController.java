@@ -34,3 +34,10 @@ public class AdminCouponController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+	
+	@GetMapping
+	public ResponseEntity<List<Coupon>> getAllCoupon(){
+		return ResponseEntity.ok(adminCouponService.getAllCoupon());
+	}
+	
+}

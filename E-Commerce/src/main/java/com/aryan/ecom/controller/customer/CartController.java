@@ -47,4 +47,10 @@ public class CartController {
 		}
 	}
 	
+	@PostMapping("/addition")
+	public ResponseEntity<OrderDto> increaseProductQuantity(@RequestBody AddProductInCartDto addProductInCartDto) {
+	    System.out.println("Received payload: " + addProductInCartDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.increaseProductQuantity(addProductInCartDto));
+	}
+
 }
