@@ -28,6 +28,7 @@ export class DashboardComponent {
     this.customerService.getAllProducts().subscribe(res => {
       res.forEach(element => {
         element.processedImg = 'data:image/jpeg;base64,' + element.byteImg;
+        console.log(element.processedImg);
         this.products.push(element);
       });
     })
@@ -45,6 +46,10 @@ export class DashboardComponent {
   }
 
   addToCart(id:any){
-    
+    this.customerService.addToCart(id).subscribe(res=>{
+      this.snackbar.open("Product added to cart Successfully!","Close",{
+        duration:5000
+      })
+    })
   }
 }
