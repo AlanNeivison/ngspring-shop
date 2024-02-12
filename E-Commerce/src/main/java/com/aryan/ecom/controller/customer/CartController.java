@@ -29,4 +29,11 @@ public class CartController {
 	    System.out.println("Received payload: " + addProductInCartDto);
 		return cartService.addProductToCart(addProductInCartDto);
 	}
+
+	@GetMapping("/cart/{userId}")
+	public ResponseEntity<?> getCartByUserId(@PathVariable Long userId) {
+		System.out.println("\n\n\n" + userId + "\n\n\n");
+		OrderDto orderDto = cartService.getCartByUserId(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+	}
 }

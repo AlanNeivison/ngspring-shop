@@ -2,6 +2,7 @@ package com.aryan.ecom.controller;
 
 import java.util.Optional;
 
+
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,6 @@ public class AuthController {
 			HttpServletResponse response) {
 
 		try {
-
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
