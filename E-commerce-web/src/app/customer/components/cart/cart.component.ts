@@ -29,6 +29,19 @@ export class CartComponent {
     this.getCart();
   }
 
+  applyCoupon() {
+    this.customerService.applyCoupon(this.couponForm.get(['code'])!.value).subscribe(res => {
+      this.snackBar.open("coupon applied successfully! ", 'Close', {
+        duration: 5000
+      });
+      this.getCart();
+    }, error => {
+      this.snackBar.open(error.error, 'Close', {
+        duration: 500
+      })
+    })
+  }
+
   getCart() {
     this.cartItems = [];
     this.customerService.getCartByUserId().subscribe(res => {
