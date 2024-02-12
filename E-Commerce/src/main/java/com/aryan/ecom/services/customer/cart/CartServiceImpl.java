@@ -106,5 +106,29 @@ public class CartServiceImpl implements CartService {
 		
 		return orderDto;
 	}
+	
+	public OrderDto applyCoupon(Long userId,String code) {
+		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.Pending);
+		Coupon coupon = couponRepository.findByCode(code).orElseThrow(()->new ValidationException("coupon not found"));
+		if(couponIsExpired(coupon)) {
+			throw new ValidationException("coupon is expired");
+		}
+		double discountAmount = ((coupon.getDiscount()/100.0)*activeOrder.getTotalAmount());
+		double netAmount = activeOrder.getTotalAmount() - discountAmount;
+		
+		activeOrder.setAmount((long)netAmount);
+		activeOrder.setDiscount((long)discountAmount);
+		activeOrder.setCoupon(coupon);
+		
+		orderRepository.save(activeOrder);
+		return activeOrder.getOrderDto();
+		
+	}
+	
+	public boolean couponIsExpired(Coupon coupon) {
+		Date currentDate = new Date();
+		Date expirationDate = coupon.getExpirationDate();
+		return expirationDate !=null && currentDate.after(expirationDate);	
+	}
 
 }

@@ -36,4 +36,15 @@ public class CartController {
 		OrderDto orderDto = cartService.getCartByUserId(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(orderDto);
 	}
+
+	@GetMapping("/coupon/{userId}/{code}")
+	public ResponseEntity<?> applyCoupon(@PathVariable Long userId, @PathVariable String code) {
+		try {
+			OrderDto orderDto = cartService.applyCoupon(userId, code);
+			return ResponseEntity.ok(orderDto);
+		} catch (ValidationException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	
 }
