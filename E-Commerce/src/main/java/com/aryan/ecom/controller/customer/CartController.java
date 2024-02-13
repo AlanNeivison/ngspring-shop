@@ -23,16 +23,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartController {
 	private final CartService cartService;
-	
+
 	@PostMapping("/cart")
 	public ResponseEntity<?> addProductToCart(@RequestBody AddProductInCartDto addProductInCartDto) {
-	    System.out.println("Received payload: " + addProductInCartDto);
 		return cartService.addProductToCart(addProductInCartDto);
 	}
 
 	@GetMapping("/cart/{userId}")
 	public ResponseEntity<?> getCartByUserId(@PathVariable Long userId) {
-		System.out.println("\n\n\n" + userId + "\n\n\n");
 		OrderDto orderDto = cartService.getCartByUserId(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(orderDto);
 	}
@@ -46,11 +44,15 @@ public class CartController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping("/addition")
 	public ResponseEntity<OrderDto> increaseProductQuantity(@RequestBody AddProductInCartDto addProductInCartDto) {
-	    System.out.println("Received payload: " + addProductInCartDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.increaseProductQuantity(addProductInCartDto));
+	}
+
+	@PostMapping("/deduction")
+	public ResponseEntity<OrderDto> decreaseProductQuantity(@RequestBody AddProductInCartDto addProductInCartDto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.decreaseProductQuantity(addProductInCartDto));
 	}
 
 }
