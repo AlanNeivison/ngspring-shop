@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aryan.ecom.dto.AddProductInCartDto;
 import com.aryan.ecom.dto.OrderDto;
+import com.aryan.ecom.dto.PlaceOrderDto;
 import com.aryan.ecom.exceptions.ValidationException;
 import com.aryan.ecom.services.customer.cart.CartService;
 
@@ -53,6 +54,11 @@ public class CartController {
 	@PostMapping("/deduction")
 	public ResponseEntity<OrderDto> decreaseProductQuantity(@RequestBody AddProductInCartDto addProductInCartDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.decreaseProductQuantity(addProductInCartDto));
+	}
+
+	@PostMapping("/placeOrder")
+	public ResponseEntity<OrderDto> placeOrder(@RequestBody PlaceOrderDto placeOrderDto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placeOrder(placeOrderDto));
 	}
 
 }
