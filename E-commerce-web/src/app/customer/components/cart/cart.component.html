@@ -31,7 +31,7 @@
             Amount: {{order.amount | currency}}
         </div>
         <div class="total-price" *ngIf="order.couponName != null">
-            Coupon Applied: {{order}}
+            Coupon Applied: {{order.couponCode}}
         </div>
         <div>
             <button mat-raised-button color="primary">Place Order</button>
