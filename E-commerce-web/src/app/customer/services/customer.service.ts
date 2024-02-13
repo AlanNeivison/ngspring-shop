@@ -29,8 +29,6 @@ export class CustomerService {
       productId: productId,
       userId: UserStorageService.getUserId()
     }
-    console.log(cartDto);
-
     return this.http.post(BASIC_URL + 'api/customer/cart', cartDto, {
       headers: this.createAuthorizationHeader(),
     });
@@ -41,9 +39,17 @@ export class CustomerService {
       productId: productId,
       userId: UserStorageService.getUserId()
     }
-    console.log(cartDto);
-
     return this.http.post(BASIC_URL + 'api/customer/addition', cartDto, {
+      headers: this.createAuthorizationHeader(),
+    });
+  }
+
+  decreaseProductQuantity(productId: any): Observable<any> {
+    const cartDto = {
+      productId: productId,
+      userId: UserStorageService.getUserId()
+    }
+    return this.http.post(BASIC_URL + 'api/customer/deduction', cartDto, {
       headers: this.createAuthorizationHeader(),
     });
   }
