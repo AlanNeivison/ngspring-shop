@@ -22,7 +22,7 @@ import { OrdersComponent } from './components/orders/orders.component';
     PostProductComponent,
     PostCouponComponent,
     CouponsComponent,
-    OrdersComponent
+    OrdersComponent,
   ],
   imports: [
     CommonModule,
