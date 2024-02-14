@@ -29,4 +29,15 @@ export class OrdersComponent {
     );
   }
 
+  changeOrderStatus(orderId: number, status: string) {
+    this.adminService.changeOrderStatus(orderId, status).subscribe(res => {
+      if (res.id != null) {
+        this.matSnackBar.open("order Status changed Successfully!! ", "Close", { duration: 5000 });
+        this.getPlacedOrders();
+      } else {
+        this.matSnackBar.open("something went wrong", "Close", { duration: 5000 });
+      }
+    })
+  }
+
 }
