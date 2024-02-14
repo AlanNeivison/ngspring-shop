@@ -6,4 +6,6 @@ import com.aryan.ecom.dto.OrderDto;
 
 public interface AdminOrderService {
 	List<OrderDto> getAllPlacedOrders();
+	
+	OrderDto changeOrderStatus(Long orderId,String status);
 }
