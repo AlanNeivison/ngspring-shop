@@ -9,6 +9,9 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -17,6 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     SignupComponent
   ],
   imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     BrowserModule,
     AppRoutingModule,
     DemoAngularMaterailModule,
