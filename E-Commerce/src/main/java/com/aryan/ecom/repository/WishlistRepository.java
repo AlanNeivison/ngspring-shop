@@ -10,5 +10,6 @@ import com.aryan.ecom.model.Wishlist;
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 	
+	List<Wishlist> findAllByUserId(Long userId);
 
 }
