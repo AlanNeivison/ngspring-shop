@@ -1,6 +1,5 @@
 package com.aryan.ecom.services.admin.adminproduct;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +12,7 @@ import com.aryan.ecom.model.Product;
 import com.aryan.ecom.repository.CategoryRepository;
 import com.aryan.ecom.repository.ProductRepository;
 
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -54,5 +54,13 @@ public class AdminProductServiceImpl implements AdminProductService {
 		}
 		
 		return false;
+	}
+	
+	public ProductDto getProductById(Long productId) {
+		Optional<Product> optionalProduct = productRepository.findById(productId);
+		if(optionalProduct.isPresent()) {
+			return optionalProduct.get().getDto();
+		}
+		return null;
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.aryan.ecom.dto.ProductDto;
 
+import io.jsonwebtoken.io.IOException;
+
 public interface AdminProductService {
 	
 	ProductDto addProduct(ProductDto productDto) throws Exception;
@@ -13,4 +15,6 @@ public interface AdminProductService {
 	List<ProductDto> getAllProductsByName(String name);
 	
 	boolean deleteProduct(Long id);
+		
+	ProductDto getProductById(Long productId);
 }
