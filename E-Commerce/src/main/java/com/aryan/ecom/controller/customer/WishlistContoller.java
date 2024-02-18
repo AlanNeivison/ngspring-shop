@@ -29,4 +29,8 @@ public class WishlistContoller {
 		return ResponseEntity.status(HttpStatus.CREATED).body(posteWishlistDto);
 	}
 	
+	@GetMapping("/wishlist/{userId}")
+	public ResponseEntity<List<WishlistDto>> getWishlistByUserId(@PathVariable Long userId){
+		return ResponseEntity.ok(wishlistService.getWishlistByUserId(userId));
+	}
 }
