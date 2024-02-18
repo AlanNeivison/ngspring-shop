@@ -34,6 +34,29 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	private final ReviewRepository reviewRepository;
 
+	public OrderedProductsResponseDto getOrderedProductsDetailsByOrderId(Long orderId) {
+		Optional<Order> optionalOrder = orderRepository.findById(orderId);
+		OrderedProductsResponseDto orderedProductsResponseDto = new OrderedProductsResponseDto();
+		if (optionalOrder.isPresent()) {
+			orderedProductsResponseDto.setOrderAmount(optionalOrder.get().getAmount());
+
+			List<ProductDto> productDtoList = new ArrayList<>();
+			for (CartItems cartItems : optionalOrder.get().getCartItems()) {
+				ProductDto productDto = new ProductDto();
+				productDto.setId(cartItems.getProduct().getId());
+				productDto.setName(cartItems.getProduct().getName());
+				productDto.setPrice(cartItems.getPrice());
+				productDto.setQuantity(cartItems.getQuantity());
+				productDto.setByteImg(cartItems.getProduct().getImg());
+
+				productDtoList.add(productDto);
+			}
+
+			orderedProductsResponseDto.setProductDtoList(productDtoList);
+			;
+		}
+		return orderedProductsResponseDto;
+	}
 	
 	public ReviewDto giveReview(ReviewDto reviewDto) throws IOException {
 		Optional<Product> optionalProduct = productRepository.findById(reviewDto.getProductId());
