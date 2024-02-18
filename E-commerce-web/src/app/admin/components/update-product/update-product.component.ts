@@ -66,4 +66,36 @@ export class UpdateProductComponent {
       this.existingImage = 'data:image/jpeg;base64,' + res.byteImg;
     })
   }
+
+  updateProduct(): void {
+    if (this.productForm.valid) {
+      const formData: FormData = new FormData();
+
+      if(this.imgChanged && this.selectedFile){
+        formData.append('img', this.selectedFile);
+      }
+
+      formData.append('categoryId', this.productForm.get('categoryId').value);
+      formData.append('name', this.productForm.get('name').value);
+      formData.append('description', this.productForm.get('description').value);
+      formData.append('price', this.productForm.get('price').value);
+      this.adminService.updateProduct(this.productId, formData).subscribe((res) => {
+        if (res.id!=null) {
+          this.snackbar.open('Product Updated Successfully!', 'close', {
+            duration: 5000
+          });
+          this.router.navigateByUrl('admin/dashboard');
+        } else {
+          this.snackbar.open('Unexpected response status: ' + res.status, 'ERROR', {
+            duration: 5000
+          });
+        }
+      })
+    } else {
+      for (const i in this.productForm.contains) {
+        this.productForm.controls[i].markAsDirty();
+        this.productForm.controls[i].updateValueAndValidity();
+      }
+    }
+  }
 }
