@@ -58,9 +58,9 @@ public class CartController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.decreaseProductQuantity(addProductInCartDto));
 	}
 
-	@PostMapping("/placeOrder")
+	@PostMapping("/placedOrder")
 	public ResponseEntity<OrderDto> placeOrder(@RequestBody PlaceOrderDto placeOrderDto) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placeOrder(placeOrderDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placedOrder(placeOrderDto));
 	}
 	
 	@GetMapping("/myOrders/{userId}")
