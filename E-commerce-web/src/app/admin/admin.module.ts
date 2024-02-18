@@ -12,6 +12,9 @@ import { PostProductComponent } from './components/post-product/post-product.com
 import { PostCouponComponent } from './components/post-coupon/post-coupon.component';
 import { CouponsComponent } from './components/coupons/coupons.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { PostProductFaqComponent } from './components/post-product-faq/post-product-faq.component';
+import { UpdateProductComponent } from './components/update-product/update-product.component';
+import { OrderByStatusComponent } from './components/analytics/order-by-status/order-by-status.component';
 
 
 @NgModule({
@@ -23,6 +26,9 @@ import { OrdersComponent } from './components/orders/orders.component';
     PostCouponComponent,
     CouponsComponent,
     OrdersComponent,
+    PostProductFaqComponent,
+    UpdateProductComponent,
+    OrderByStatusComponent,
   ],
   imports: [
     CommonModule,
