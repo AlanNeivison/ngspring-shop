@@ -36,7 +36,7 @@ export class PostCouponComponent {
           this.snackBar.open('Coupon Posted Successfully !','Close',{
             duration:5000
           });
-          this.router.navigateByUrl('/admin/dashboard');
+          this.router.navigateByUrl('admin/dashboard');
         }else{
           this.snackBar.open(res.message,'Close',{
             duration:5000,

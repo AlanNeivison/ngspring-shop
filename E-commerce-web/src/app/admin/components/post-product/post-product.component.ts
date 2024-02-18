@@ -64,7 +64,7 @@ export class PostProductComponent {
           this.snackbar.open('Product Posted Successfully!','close',{
             duration:5000
           });
-          this.router.navigateByUrl('/admin/dashboard');
+          this.router.navigateByUrl('admin/dashboard');
         }else{
           this.snackbar.open(res.message,'ERROR' ,{
             duration:5000

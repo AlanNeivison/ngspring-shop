@@ -28,7 +28,6 @@ export class DashboardComponent {
     this.customerService.getAllProducts().subscribe(res => {
       res.forEach(element => {
         element.processedImg = 'data:image/jpeg;base64,' + element.byteImg;
-        console.log(element.processedImg);
         this.products.push(element);
       });
     })

@@ -35,7 +35,7 @@ export class PlaceOrderComponent {
         this.snackBar.open("Order placed successfully",'Close',{
           duration: 5000
         })
-        this.router.navigateByUrl("/customer/cart/my-orders");
+        this.router.navigateByUrl("customer/cart/my-orders");
         this.closeForm();
       }else{
         this.snackBar.open("Something went wrong : ",'Close',{
