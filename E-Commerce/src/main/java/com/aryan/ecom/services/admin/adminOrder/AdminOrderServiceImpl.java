@@ -1,5 +1,8 @@
 package com.aryan.ecom.services.admin.adminOrder;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -7,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.aryan.ecom.dto.AnalyticsResponse;
 import com.aryan.ecom.dto.OrderDto;
 import com.aryan.ecom.enums.OrderStatus;
 import com.aryan.ecom.model.Order;
@@ -40,4 +44,21 @@ public class AdminOrderServiceImpl implements AdminOrderService{
 		return null;
 	}
 	
+	public AnalyticsResponse calculateAnalytics() {
+		LocalDate currentDate = LocalDate.now();
+		LocalDate previousMonthDate = currentDate.minusMonths(1);
+		
+		Long currentMonthOrders = getTotalOrdersForMonths(currentDate.getMonthValue(),currentDate.getYear());
+		Long previousMonthOrders = getTotalOrdersForMonths(previousMonthDate.getMonthValue(), previousMonthDate.getYear());
+		
+		Long currentMonthEarning = getTotalEarningsForMonth(currentDate.getMonthValue(),currentDate.getYear());
+		Long previousMonthEarning = getTotalEarningsForMonth(previousMonthDate.getMonthValue(), previousMonthDate.getYear());
+		
+		Long placed = orderRepository.countByOrderStatus(OrderStatus.Placed);
+		Long shipped = orderRepository.countByOrderStatus(OrderStatus.Shipped);
+		Long delivered = orderRepository.countByOrderStatus(OrderStatus.Delivered);
+		
+		return new AnalyticsResponse(placed, shipped, delivered, currentMonthOrders, previousMonthOrders, currentMonthEarning, previousMonthEarning);
+		
+	}
 }
