@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'coupons', component: CouponsComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'faq/:productId', component: PostProductFaqComponent },
+  { path: 'analytics', component: AnalyticsComponent }, 
 
 ];
 
