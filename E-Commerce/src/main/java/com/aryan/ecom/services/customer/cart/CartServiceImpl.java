@@ -55,6 +55,9 @@ public class CartServiceImpl implements CartService {
 		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(addProductInCartDto.getUserId(),
 				OrderStatus.Pending);
 
+		if (activeOrder == null)
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order is empty");
+
 		Optional<CartItems> optionalCartItems = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
 				addProductInCartDto.getProductId(), activeOrder.getId(), addProductInCartDto.getUserId());
 
@@ -92,7 +95,8 @@ public class CartServiceImpl implements CartService {
 	public OrderDto getCartByUserId(Long userId) {
 		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.Pending);
 		// if order is in other state than pending
-		if(activeOrder==null) return null;
+		if (activeOrder == null)
+			return null;
 		List<CartItemsDto> cartItemsDtosList = activeOrder.getCartItems().stream().map(CartItems::getCartDto)
 				.collect(Collectors.toList());
 
@@ -103,8 +107,8 @@ public class CartServiceImpl implements CartService {
 		orderDto.setDiscount(activeOrder.getDiscount());
 		orderDto.setTotalAmount(activeOrder.getTotalAmount());
 		orderDto.setCartItems(cartItemsDtosList);
-		if(activeOrder.getCoupon()!=null)
-		orderDto.setCouponCode(activeOrder.getCoupon().getCode());
+		if (activeOrder.getCoupon() != null)
+			orderDto.setCouponCode(activeOrder.getCoupon().getCode());
 
 		if (activeOrder.getCoupon() != null) {
 			orderDto.setCouponName(activeOrder.getCoupon().getName());
@@ -204,35 +208,41 @@ public class CartServiceImpl implements CartService {
 		}
 		return null;
 	}
-	
-	public OrderDto placeOrder(PlaceOrderDto placeOrderDto) {
-		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(placeOrderDto.getUserId(),
-				OrderStatus.Pending);
+
+	public OrderDto placedOrder(PlaceOrderDto placeOrderDto) {
+		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(placeOrderDto.getUserId(), OrderStatus.Pending);
 		Optional<User> optionalUser = userRepository.findById(placeOrderDto.getUserId());
-		if(optionalUser.isPresent()) {
+		if (optionalUser.isPresent()) {
 			activeOrder.setOrderDescription(placeOrderDto.getOrderDescription());
+			// debug
+			System.out.println(placeOrderDto.getOrderDescription());
 			activeOrder.setAddress(placeOrderDto.getAddress());
 			activeOrder.setDate(new Date());
 			activeOrder.setOrderStatus(OrderStatus.Placed);
 			activeOrder.setTrackingId(UUID.randomUUID());
-			
+
 			orderRepository.save(activeOrder);
-			
-			Order order= new Order();
+
+			Order order = new Order();
 			order.setAmount(0L);
 			order.setTotalAmount(0L);
 			order.setDiscount(0L);
 			order.setUser(optionalUser.get());
 			order.setOrderStatus(OrderStatus.Pending);
 			orderRepository.save(order);
-			
+
 			return activeOrder.getOrderDto();
 		}
 		return null;
 	}
+
+	public List<OrderDto> getMyPlacedOrders(Long userId) {
+		return orderRepository
+				.findByUserIdAndOrderStatusIn(userId,
+						List.of(OrderStatus.Shipped, OrderStatus.Placed, OrderStatus.Delivered))
+				.stream().map(Order::getOrderDto).collect(Collectors.toList());
+	}
 	
-	public List<OrderDto> getMyPlacedOrders(Long userId){
-		return orderRepository.findByUserIdAndOrderStatusIn(userId, List.of(OrderStatus.Shipped,OrderStatus.Placed,OrderStatus.Delivered)).stream().map(Order::getOrderDto).collect(Collectors.toList());
 	}
 
 }

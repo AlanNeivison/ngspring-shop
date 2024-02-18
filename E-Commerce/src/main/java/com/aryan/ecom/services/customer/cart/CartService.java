@@ -1,6 +1,7 @@
 package com.aryan.ecom.services.customer.cart;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +20,7 @@ public interface CartService {
 	
 	OrderDto decreaseProductQuantity(AddProductInCartDto addProductInCartDto);
 	
-	OrderDto placeOrder(PlaceOrderDto placeOrderDto);
+	OrderDto placedOrder(PlaceOrderDto placeOrderDto);
 	
 	List<OrderDto> getMyPlacedOrders(Long userId);
 }
