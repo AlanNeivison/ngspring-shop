@@ -28,4 +28,11 @@ public class ReviewController {
 		return ResponseEntity.ok(reviewService.getOrderedProductsDetailsByOrderId(orderId));
 	}
 	
+	@PostMapping("/review")
+	public ResponseEntity<?> giveReview(@ModelAttribute ReviewDto reviewDto) throws IOException{
+		ReviewDto reviewDto2 = reviewService.giveReview(reviewDto);
+		if(reviewDto2==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong");
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewDto2);
+	}
+}
 
