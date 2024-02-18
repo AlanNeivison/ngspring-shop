@@ -38,4 +38,7 @@ public class WishlistServiceImpl implements WishlistService{
 		return null;
 	}
 	
+	public  List<WishlistDto> getWishlistByUserId(Long userId){
+		return wishlistRepository.findAllByUserId(userId).stream().map(Wishlist::getWishlistDto).collect(Collectors.toList());
+	}
 }
