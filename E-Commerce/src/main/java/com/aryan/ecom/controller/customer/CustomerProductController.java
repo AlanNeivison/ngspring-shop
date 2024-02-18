@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aryan.ecom.dto.ProductDetailDto;
 import com.aryan.ecom.dto.ProductDto;
 import com.aryan.ecom.services.customer.CustomerProductService;
 
@@ -33,4 +34,11 @@ public class CustomerProductController {
 		return ResponseEntity.ok(productDtos);
 	}
 
+	@GetMapping("/product/{productId}")
+	public ResponseEntity<ProductDetailDto> getProductDetailById(@PathVariable Long productId){
+		ProductDetailDto productDetailDto = customerProductService.getProductDetailById(productId);
+		if(productDetailDto == null) return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(productDetailDto);
+	}
 }
