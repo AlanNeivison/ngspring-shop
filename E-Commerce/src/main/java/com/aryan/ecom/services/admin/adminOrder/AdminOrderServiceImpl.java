@@ -83,4 +83,30 @@ public class AdminOrderServiceImpl implements AdminOrderService{
 		 return (long)orders.size();
 		 
 	}
+	
+	public Long getTotalEarningsForMonth(int month,int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(calendar.YEAR, year);
+		calendar.set(calendar.MONTH, month-1);
+		calendar.set(calendar.DAY_OF_MONTH, 1);
+		calendar.set(calendar.HOUR_OF_DAY, 0);
+		calendar.set(calendar.MINUTE, 0);
+		calendar.set(calendar.SECOND, 0);
+		
+		 Date startOfMonth = calendar.getTime();
+		 calendar.set(calendar.DAY_OF_MONTH, calendar.getActualMaximum(calendar.DAY_OF_MONTH));
+		 calendar.set(calendar.HOUR_OF_DAY, 23);
+		 calendar.set(calendar.MINUTE, 59);
+		 calendar.set(calendar.SECOND, 59);
+		 
+		 Date endOfMonth = calendar.getTime();
+		 List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(startOfMonth,endOfMonth,OrderStatus.Delivered);
+		 
+		 Long sum =0L;
+		 for(Order order:orders) {
+			 sum += order.getAmount();
+		 }
+		 return sum;
+	}
+	
 }
