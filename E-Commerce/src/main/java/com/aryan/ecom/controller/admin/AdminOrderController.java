@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aryan.ecom.dto.AnalyticsResponse;
 import com.aryan.ecom.dto.OrderDto;
 import com.aryan.ecom.services.admin.adminOrder.AdminOrderService;
 
@@ -32,6 +33,11 @@ public class AdminOrderController {
 			return ResponseEntity.badRequest().body("Something Went Wrong!!");
 
 		return ResponseEntity.ok(orderDto);
+	}
+	
+	@GetMapping("/order/analytics")
+	public ResponseEntity<AnalyticsResponse> getAnalytics() {
+		return ResponseEntity.ok(adminOrderService.calculateAnalytics());
 	}
 
 }
