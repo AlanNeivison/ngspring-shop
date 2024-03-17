@@ -58,6 +58,7 @@ public class CartServiceImpl implements CartService {
 		if (activeOrder == null)
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order is empty");
 
+		// check if that same product is already present for that particular user
 		Optional<CartItems> optionalCartItems = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
 				addProductInCartDto.getProductId(), activeOrder.getId(), addProductInCartDto.getUserId());
 
