@@ -5,7 +5,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.aryan.ecom.dto.FAQDto;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

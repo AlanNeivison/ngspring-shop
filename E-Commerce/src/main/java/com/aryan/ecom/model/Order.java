@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.annotations.Cascade;
-
 import com.aryan.ecom.dto.OrderDto;
 import com.aryan.ecom.enums.OrderStatus;
 

@@ -28,8 +28,6 @@ import com.aryan.ecom.repository.OrderRepository;
 import com.aryan.ecom.repository.ProductRepository;
 import com.aryan.ecom.repository.UserRepository;
 
-import jakarta.persistence.Id;
-
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -75,6 +73,7 @@ public class CartServiceImpl implements CartService {
 				cartItems.setPrice(optionalProduct.get().getPrice());
 				cartItems.setQuantity(1L);
 				cartItems.setUser(optionalUser.get());
+				
 				cartItems.setOrder(activeOrder);
 
 				CartItems updatedCart = cartItemsRepository.save(cartItems);

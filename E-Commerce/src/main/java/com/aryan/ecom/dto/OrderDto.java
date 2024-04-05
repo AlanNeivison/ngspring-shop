@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.aryan.ecom.enums.OrderStatus;
-import com.aryan.ecom.model.CartItems;
-import com.aryan.ecom.model.User;
-
 import lombok.Data;
 
 @Data

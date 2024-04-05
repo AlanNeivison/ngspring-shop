@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.PutExchange;
-
 import com.aryan.ecom.dto.FAQDto;
 import com.aryan.ecom.dto.ProductDto;
 import com.aryan.ecom.services.admin.adminproduct.AdminProductService;
