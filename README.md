@@ -4,6 +4,8 @@
 
 This E-Commerce project is built with Angular for the frontend and Spring Boot for the backend, using MySQL as the database. The goal is to create a seamless online shopping experience with a user-friendly interface and a robust backend.
 
+<img src="./ui.png">
+
 ## Features
 
 - **User Authentication:** Secure user registration and login functionality.
