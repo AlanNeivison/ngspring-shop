@@ -1,5 +1,8 @@
 package com.aryan.ecom.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +19,9 @@ import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class FAQ {
 
 	@Id

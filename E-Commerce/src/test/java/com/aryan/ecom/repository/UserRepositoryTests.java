@@ -23,7 +23,6 @@ public class UserRepositoryTests {
     @BeforeEach
     void setUp() {
         user = User.builder().email("demoEmail@mail.com").name("demoName").password(new BCryptPasswordEncoder().encode("demoPassword")).role(UserRole.CUSTOMER).build();
-
         userRepository.save(user);
     }
 

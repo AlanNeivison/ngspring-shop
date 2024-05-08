@@ -5,9 +5,15 @@ import java.util.List;
 import java.util.UUID;
 
 import com.aryan.ecom.enums.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class OrderDto {
 	private Long id;
 

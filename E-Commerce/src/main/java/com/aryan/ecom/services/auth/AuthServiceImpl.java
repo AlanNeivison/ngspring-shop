@@ -32,12 +32,13 @@ public class AuthServiceImpl implements AuthService {
     private OrderRepository orderRepository;
 
     public UserDto createUser(SignupRequest signupRequest) {
-        User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setName(signupRequest.getName());
-        user.setPassword(bEncoder.encode(signupRequest.getPassword()));
-        user.setRole(UserRole.CUSTOMER);
-        User createdUser = userRepository.save(user);
+
+        User createdUser = userRepository.save(User.builder()
+                .email(signupRequest.getEmail())
+                .name(signupRequest.getName())
+                .password(bEncoder.encode(signupRequest.getPassword()))
+                .role(UserRole.CUSTOMER)
+                .build());
 
         Order order = new Order();
         order.setAmount(0L);
@@ -46,7 +47,6 @@ public class AuthServiceImpl implements AuthService {
         order.setUser(createdUser);
         order.setOrderStatus(OrderStatus.Pending);
         orderRepository.save(order);
-
 
         UserDto userDto = new UserDto();
         userDto.setId(createdUser.getId());
@@ -59,19 +59,19 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.findFirstByEmail(email).isPresent();
     }
 
-
     @PostConstruct
     public void createAdminAccount() {
         log.info("Running application for first time creates an Admin account with default info");
         Optional<User> adminAccountUser = userRepository.findByRole(UserRole.ADMIN);
-        if (adminAccountUser.isPresent()) {
-            User user = new User();
-            user.setEmail("admin@gmail.com");
-            user.setName("admin");
-            user.setRole(UserRole.ADMIN);
-            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
-            userRepository.save(user);
+        if (adminAccountUser.isEmpty()) {
+            User.builder()
+                    .email("admin@gmail.com")
+                    .name("admin")
+                    .role(UserRole.ADMIN)
+                    .password(new BCryptPasswordEncoder().encode("admin"))
+                    .build();
         }
     }
+
 
 }

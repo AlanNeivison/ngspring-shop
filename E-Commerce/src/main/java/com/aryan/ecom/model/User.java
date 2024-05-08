@@ -11,6 +11,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
