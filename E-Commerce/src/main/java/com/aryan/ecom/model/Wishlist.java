@@ -1,5 +1,8 @@
 package com.aryan.ecom.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +19,9 @@ import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class Wishlist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +37,17 @@ public class Wishlist {
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-	
+
 	public WishlistDto getWishlistDto() {
-		WishlistDto wishlistDto = new WishlistDto();
-		wishlistDto.setId(id);
-		wishlistDto.setProductId(product.getId());
-		wishlistDto.setReturnedImg(product.getImg());
-		wishlistDto.setProductName(product.getName());
-		wishlistDto.setProductDescription(product.getDescription());
-		
-		wishlistDto.setPrice(product.getPrice());
-		wishlistDto.setUserId(user.getId());
-		return wishlistDto;
+		return WishlistDto.builder()
+				.id(id)
+				.productId(product.getId())
+				.returnedImg(product.getImg())
+				.productName(product.getName())
+				.productDescription(product.getDescription())
+				.price(product.getPrice())
+				.userId(user.getId())
+				.build();
 	}
 	
 }
