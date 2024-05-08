@@ -8,7 +8,9 @@ import com.aryan.ecom.repository.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class AdminProductServiceImplTest {
 
@@ -147,18 +148,27 @@ class AdminProductServiceImplTest {
 
     @Test
     void deleteProduct_Deleted() {
+        // mock jpa methods
         when(productRepository.findById(any())).thenReturn(Optional.of(savedProduct));
+        doAnswer(Answers.CALLS_REAL_METHODS).when(
+          productRepository).deleteById(any());
+
         assertTrue(adminProductService.deleteProduct(1L));
     }
 
     @Test
     void deleteProduct_NotFound() {
+        mock(ProductRepository.class, CALLS_REAL_METHODS);
         when(productRepository.findById(any())).thenReturn(Optional.empty());
+        doAnswer(Answers.CALLS_REAL_METHODS).when(
+                productRepository).deleteById(any());
+
         assertFalse(adminProductService.deleteProduct(1L));
     }
 
     @Test
     void getProductById_Found() {
+        mock(ProductRepository.class, CALLS_REAL_METHODS);
         when(productRepository.findById(any())).thenReturn(Optional.of(savedProduct));
         assertNotNull(adminProductService.getProductById(1L));
         assertEquals(savedProduct.getId(), adminProductService.getProductById(1L).getId());

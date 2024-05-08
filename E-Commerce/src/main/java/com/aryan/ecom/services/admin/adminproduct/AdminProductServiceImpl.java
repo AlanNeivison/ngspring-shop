@@ -57,7 +57,6 @@ public class AdminProductServiceImpl implements AdminProductService {
             productRepository.deleteById(id);
             return true;
         }
-
         return false;
     }
 
