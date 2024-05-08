@@ -56,7 +56,6 @@ public class JwtUtil {
 	}
 
 	private Date extractExpiration(String token) {
-		// TODO Auto-generated method stub
 		return extractClaim(token, Claims::getExpiration);
 	}
 

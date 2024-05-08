@@ -41,12 +41,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 			List<ProductDto> productDtoList = new ArrayList<>();
 			for (CartItems cartItems : optionalOrder.get().getCartItems()) {
-				ProductDto productDto = new ProductDto();
-				productDto.setId(cartItems.getProduct().getId());
-				productDto.setName(cartItems.getProduct().getName());
-				productDto.setPrice(cartItems.getPrice());
-				productDto.setQuantity(cartItems.getQuantity());
-				productDto.setByteImg(cartItems.getProduct().getImg());
+				ProductDto productDto = ProductDto.builder()
+						.id(cartItems.getProduct().getId())
+						.name(cartItems.getProduct().getName())
+						.price(cartItems.getPrice())
+						.quantity(cartItems.getQuantity())
+						.byteImg(cartItems.getProduct().getImg())
+						.build();
+
 
 				productDtoList.add(productDto);
 			}
