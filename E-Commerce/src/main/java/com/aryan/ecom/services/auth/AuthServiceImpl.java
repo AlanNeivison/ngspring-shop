@@ -1,5 +1,6 @@
 package com.aryan.ecom.services.auth;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,58 +16,62 @@ import com.aryan.ecom.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 
+import java.util.Optional;
+
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private BCryptPasswordEncoder bEncoder;
-	
-	@Autowired
-	private OrderRepository orderRepository;
+    @Autowired
+    private BCryptPasswordEncoder bEncoder;
 
-	public UserDto createUser(SignupRequest signupRequest) {
-		User user = new User();
-		user.setEmail(signupRequest.getEmail());
-		user.setName(signupRequest.getName());
-		user.setPassword(bEncoder.encode(signupRequest.getPassword()));
-		user.setRole(UserRole.CUSTOMER);
-		User createdUser = userRepository.save(user);
-		
-		Order order= new Order();
-		order.setAmount(0L);
-		order.setTotalAmount(0L);
-		order.setDiscount(0L);
-		order.setUser(createdUser);
-		order.setOrderStatus(OrderStatus.Pending);
-		orderRepository.save(order);
-		
-		
-		UserDto userDto = new UserDto();
-		userDto.setId(createdUser.getId());
-		
-		return userDto;
+    @Autowired
+    private OrderRepository orderRepository;
 
-	}
-	
-	public Boolean hasUserWithEmail(String email) {
-		return userRepository.findFirstByEmail(email).isPresent();
-	}
-	
-	
-	@PostConstruct
-	public void createAdminAccount() {
-		User adminAccountUser = userRepository.findByRole(UserRole.ADMIN);
-		if(adminAccountUser==null) {
-			User user = new User();
-			user.setEmail("admin@gmail.com");
-			user.setName("admin");
-			user.setRole(UserRole.ADMIN);
-			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
-			userRepository.save(user);
-		}
-	}
+    public UserDto createUser(SignupRequest signupRequest) {
+        User user = new User();
+        user.setEmail(signupRequest.getEmail());
+        user.setName(signupRequest.getName());
+        user.setPassword(bEncoder.encode(signupRequest.getPassword()));
+        user.setRole(UserRole.CUSTOMER);
+        User createdUser = userRepository.save(user);
+
+        Order order = new Order();
+        order.setAmount(0L);
+        order.setTotalAmount(0L);
+        order.setDiscount(0L);
+        order.setUser(createdUser);
+        order.setOrderStatus(OrderStatus.Pending);
+        orderRepository.save(order);
+
+
+        UserDto userDto = new UserDto();
+        userDto.setId(createdUser.getId());
+
+        return userDto;
+
+    }
+
+    public Boolean hasUserWithEmail(String email) {
+        return userRepository.findFirstByEmail(email).isPresent();
+    }
+
+
+    @PostConstruct
+    public void createAdminAccount() {
+        log.info("Running application for first time creates an Admin account with default info");
+        Optional<User> adminAccountUser = userRepository.findByRole(UserRole.ADMIN);
+        if (adminAccountUser.isPresent()) {
+            User user = new User();
+            user.setEmail("admin@gmail.com");
+            user.setName("admin");
+            user.setRole(UserRole.ADMIN);
+            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+            userRepository.save(user);
+        }
+    }
 
 }
