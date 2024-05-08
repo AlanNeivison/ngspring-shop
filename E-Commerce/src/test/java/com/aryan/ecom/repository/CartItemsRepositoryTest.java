@@ -113,6 +113,11 @@ class CartItemsRepositoryTest {
     @AfterEach
     void tearDown() {
         cartItemsRepository.deleteAll();
+        orderRepository.deleteAll();
+        couponRepository.deleteAll();
+        userRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @Test

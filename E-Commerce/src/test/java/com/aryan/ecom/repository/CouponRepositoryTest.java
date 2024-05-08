@@ -33,6 +33,7 @@ class CouponRepositoryTest {
 
     @AfterEach
     void tearDown() {
+        couponRepository.deleteAll();
     }
 
     @Test

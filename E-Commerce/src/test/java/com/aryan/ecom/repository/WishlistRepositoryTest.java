@@ -78,6 +78,9 @@ class WishlistRepositoryTest {
     @AfterEach
     void tearDown() {
         wishlistRepository.deleteAll();
+        userRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @Test
