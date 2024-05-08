@@ -1,5 +1,8 @@
 package com.aryan.ecom.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +20,9 @@ import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class CartItems {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,14 +47,14 @@ public class CartItems {
 	private Order order;
  
 	public CartItemsDto getCartDto() {
-		CartItemsDto cartItemsDto = new CartItemsDto();
-		cartItemsDto.setId(id);
-		cartItemsDto.setPrice(price);
-		cartItemsDto.setProductId(product.getId());
-		cartItemsDto.setQuantity(quantity);
-		cartItemsDto.setUserId(user.getId());
-		cartItemsDto.setProductName(product.getName());
-		cartItemsDto.setReturnedImage(product.getImg());
-		return cartItemsDto;
+		return CartItemsDto.builder()
+				.id(id)
+				.price(price)
+				.productId(product.getId())
+				.quantity(quantity)
+				.userId(user.getId())
+				.productName(product.getName())
+				.returnedImage(product.getImg())
+				.build();
 	}
 }
