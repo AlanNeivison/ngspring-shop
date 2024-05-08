@@ -25,9 +25,11 @@ import com.aryan.ecom.utils.JwtUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
 	private final AuthenticationManager authenticationManager;
@@ -71,6 +73,7 @@ public class AuthController {
 			} catch (Exception e) {
 			}
 			response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
+			log.info("USER TOKEN GENERATED : {} ", jwt);
 		}
 
 	}
