@@ -3,18 +3,15 @@ package com.aryan.ecom.model;
 import com.aryan.ecom.dto.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
-@Builder
-//@RequiredArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+@NoArgsConstructor
 @Table(name = "product")
 public class Product {
 
