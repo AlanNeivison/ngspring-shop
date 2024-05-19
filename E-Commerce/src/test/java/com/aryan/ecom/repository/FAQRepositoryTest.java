@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Slf4j
+@Transactional
 class FAQRepositoryTest {
     @Autowired
     private FAQRepository faqRepository;
@@ -33,13 +36,14 @@ class FAQRepositoryTest {
 
     @BeforeEach
     void setUp() throws IOException {
+        clearDatabase();
+
         category = Category.builder()
                 .name("demoCategory")
                 .description("demoDescription")
                 .build();
         category = categoryRepository.save(category);
         log.info("Category Created : {}",category.toString());
-
 
         MultipartFile mockMultipartFile = new MockMultipartFile("test.jpg", "test.jpg", "image/jpeg", "test image".getBytes());
         product = Product.builder()
@@ -61,7 +65,6 @@ class FAQRepositoryTest {
         faq = faqRepository.save(faq);
         log.info("FAQ Created : {}",faq.toString());
 
-
         faq = FAQ.builder()
                 .question("Question 2?")
                 .answer("Answer !!")
@@ -74,9 +77,10 @@ class FAQRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        faq=null;
-        product=null;
-        category=null;
+        clearDatabase();
+    }
+
+    private void clearDatabase() {
         faqRepository.deleteAll();
         productRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -84,7 +88,7 @@ class FAQRepositoryTest {
 
     @Test
     void findAllByProductId() {
-        List<FAQ> faqList = faqRepository.findAllByProductId(1L);
+        List<FAQ> faqList = faqRepository.findAllByProductId(product.getId());
         assertNotNull(faqList);
         assertEquals(2, faqList.size());
 

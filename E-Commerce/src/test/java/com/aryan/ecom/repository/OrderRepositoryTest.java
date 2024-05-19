@@ -3,7 +3,6 @@ package com.aryan.ecom.repository;
 import com.aryan.ecom.enums.OrderStatus;
 import com.aryan.ecom.enums.UserRole;
 import com.aryan.ecom.model.*;
-import com.aryan.ecom.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,18 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Slf4j
+@DirtiesContext
 class OrderRepositoryTest {
 
     @Autowired
@@ -48,6 +49,8 @@ class OrderRepositoryTest {
 
     @BeforeEach
     void setUp() throws IOException {
+        clearDatabase();
+
         user = User.builder()
                 .email("demoEmail@mail.com")
                 .name("demoName")
@@ -108,6 +111,10 @@ class OrderRepositoryTest {
 
     @AfterEach
     void tearDown() {
+        clearDatabase();
+    }
+
+    public void clearDatabase() {
         cartItemsRepository.deleteAll();
         orderRepository.deleteAll();
         couponRepository.deleteAll();
@@ -141,12 +148,10 @@ class OrderRepositoryTest {
         assertEquals(order, optionalOrder.get());
     }
 
-//    TODO : FIX
     @Test
     void findByDateBetweenAndOrderStatus() {
         Date startOfMonth = new Date();
-        Date endOfMonth = new Date();
-        List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(startOfMonth, endOfMonth, OrderStatus.Delivered);
+        List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(startOfMonth, new Date(startOfMonth.getTime() + (3600 * 24 * 30)), OrderStatus.Delivered);
         assertFalse(orders.contains(order));
     }
 

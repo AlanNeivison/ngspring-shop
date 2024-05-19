@@ -27,7 +27,8 @@ class ProductRepositoryTest {
     private CategoryRepository categoryRepository;
 
     @BeforeEach
-    void setUp() throws IOException, CloneNotSupportedException {
+    void setUp() throws Exception {
+        tearDown();
         category = Category.builder()
                 .name("demoCategory")
                 .description("demoDescription")
@@ -54,9 +55,7 @@ class ProductRepositoryTest {
     @AfterEach
     void tearDown() {
         productRepository.deleteAll();
-        log.info("PRODUCTS DELETED");
         categoryRepository.deleteAll();
-        log.info("Categories DELETED");
     }
 
     @Test
