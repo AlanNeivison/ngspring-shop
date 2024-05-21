@@ -1,10 +1,11 @@
 package com.aryan.ecom.controller.admin;
 
-import com.aryan.ecom.dto.CategoryDto;
 import com.aryan.ecom.filters.JwtRequestFilter;
-import com.aryan.ecom.model.Category;
+import com.aryan.ecom.model.Coupon;
 import com.aryan.ecom.services.admin.category.CategoryService;
+import com.aryan.ecom.services.admin.coupon.AdminCouponService;
 import com.aryan.ecom.services.jwt.UserDetailsServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,27 +16,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-@WebMvcTest(AdminCategoryController.class)
+@WebMvcTest(AdminCouponController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-class AdminCategoryControllerTest {
+class AdminCouponControllerTest {
+
     // TO satisfy dependency requirements
     @MockBean
     private JwtRequestFilter jwtRequestFilter;
@@ -45,27 +47,15 @@ class AdminCategoryControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private CategoryService categoryService;
+    private AdminCouponService adminCouponService;
 
-    private Category category1;
-    private Category category2;
-    private CategoryDto categoryDto;
-    List<Category> categories;
+    private Coupon coupon;
+    private Coupon createdCoupon;
 
     @BeforeEach
     void setUp() {
-        category1 = Category.builder()
-                .name("cat1")
-                .description("cat1_description")
-                .build();
-        category2 = Category.builder()
-                .name("cat2")
-                .description("cat2_description")
-                .build();
-        categoryDto = category1.getDto();
-        categories = new ArrayList<>();
-        categories.add(category1);
-        categories.add(category2);
+        coupon = Coupon.builder().code("FLAT15").build();
+        createdCoupon = Coupon.builder().id(1L).code("FLAT15").build();
 
     }
 
@@ -74,27 +64,24 @@ class AdminCategoryControllerTest {
     }
 
     @Test
-    void createCategory() throws Exception {
+    void createCoupon() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE,false);
         ObjectWriter objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
-        String requestJSON = objectWriter.writeValueAsString(categoryDto);
+        String requestJSON = objectWriter.writeValueAsString(coupon);
         log.info(requestJSON);
 
-        when(categoryService.createCategory(categoryDto)).thenReturn(category1);
-        log.info(objectWriter.writeValueAsString(category1));
+        when(adminCouponService.createCoupon(any(Coupon.class))).thenReturn(createdCoupon);
 
-        mockMvc.perform(post("/api/admin/category")
+        mockMvc.perform(post("/api/admin/coupons")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJSON))
-                .andDo(print()).andExpect(status().isCreated());
-
+                .andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    void getAllCategory() throws Exception {
-        when(categoryService.getAllCategory()).thenReturn(categories);
-        mockMvc.perform(get("/api/admin/categories"))
-                .andExpect(status().isOk());
+    void getAllCoupon() throws Exception {
+        when(adminCouponService.getAllCoupon()).thenReturn(List.of(createdCoupon));
+        mockMvc.perform(get("/api/admin/coupons")).andExpect(status().isOk());
     }
 }

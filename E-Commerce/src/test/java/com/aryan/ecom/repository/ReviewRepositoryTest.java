@@ -101,10 +101,6 @@ class ReviewRepositoryTest {
     }
 
     public void clearDatabase() {
-        review = null;
-        product = null;
-        category = null;
-        user = null;
         reviewRepository.deleteAll();
         productRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -114,7 +110,7 @@ class ReviewRepositoryTest {
 
     @Test
     void findAllByProductId() {
-        List<Review> reviewList = reviewRepository.findAllByProductId(1L);
+        List<Review> reviewList = reviewRepository.findAllByProductId(product.getId());
         assertEquals(2, reviewList.size());
         for (Review r : reviewList) {
             assertEquals(product.getId(), r.getProduct().getId());
