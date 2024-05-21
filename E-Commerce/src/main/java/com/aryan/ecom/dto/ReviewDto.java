@@ -2,6 +2,7 @@ package com.aryan.ecom.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class ReviewDto {
 	private Long id;
 
