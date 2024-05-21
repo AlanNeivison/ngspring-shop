@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import io.jsonwebtoken.security.Keys;
 
 @SuppressWarnings("deprecation")
 @Component
+@Slf4j
 public class JwtUtil {
 	public static final String SECRET = "THISISAVEERYLONGANDSECURESECRETKEYFORJWTGENERATIONBYARYANPATIL1"
 	        + "THISISAVEERYLONGANDSECURESECRETKEYFORJWTGENERATIONBYARYANPATIL2";

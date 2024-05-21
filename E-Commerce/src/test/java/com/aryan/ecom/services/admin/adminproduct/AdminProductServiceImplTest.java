@@ -104,14 +104,12 @@ class AdminProductServiceImplTest {
 
     @Test
     void testAddProduct_Added() throws Exception {
-
         mock(ProductRepository.class);
         mock(CategoryRepository.class);
 
-        // mock behaviour of repo layer
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 
-        // for some reason this doesnt work:         when(productRepository.save(product)).thenReturn(product);
+        // for some reason this doesnt work:         when(productRepository.save(product)).thenReturn(product); TODO : understand
         when(productRepository.save(product)).thenReturn(savedProduct);
 
         assertEquals(adminProductService.addProduct(productDto).getName(), productDto.getName());
