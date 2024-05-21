@@ -157,7 +157,7 @@ class OrderRepositoryTest {
 
     @Test
     void countByOrderStatus() {
-        long count = orderRepository.countByOrderStatus(OrderStatus.Delivered);
-        assertEquals(1, count);
+        assertEquals(1, orderRepository.countByOrderStatus(OrderStatus.Delivered));
+        assertEquals(0, orderRepository.countByOrderStatus(OrderStatus.Pending));
     }
 }
