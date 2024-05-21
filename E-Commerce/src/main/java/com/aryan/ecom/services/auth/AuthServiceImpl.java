@@ -1,5 +1,6 @@
 package com.aryan.ecom.services.auth;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,16 +21,17 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bEncoder;
+    private final BCryptPasswordEncoder bEncoder;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     public UserDto createUser(SignupRequest signupRequest) {
 
@@ -64,14 +66,16 @@ public class AuthServiceImpl implements AuthService {
         log.info("Running application for first time creates an Admin account with default info");
         Optional<User> adminAccountUser = userRepository.findByRole(UserRole.ADMIN);
         if (adminAccountUser.isEmpty()) {
+            log.info("Admin account created !! with email : admin@gmail.com and pass : admin");
+           userRepository.save(
             User.builder()
                     .email("admin@gmail.com")
                     .name("admin")
                     .role(UserRole.ADMIN)
-                    .password(new BCryptPasswordEncoder().encode("admin"))
-                    .build();
+                    .password(bEncoder.encode("admin"))
+                    .build()
+           );
         }
     }
-
 
 }

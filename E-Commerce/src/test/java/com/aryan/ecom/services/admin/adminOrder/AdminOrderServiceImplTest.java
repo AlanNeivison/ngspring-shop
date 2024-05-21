@@ -195,7 +195,7 @@ class AdminOrderServiceImplTest {
 
     }
 
-    // todo : FIX this test (1)
+    // todo : FIX date error
 //    @Test
     void testGetTotalOrdersForMonths() {
         int year = 2024;
@@ -235,7 +235,7 @@ class AdminOrderServiceImplTest {
         assertEquals(1L, totalOrders, "Should return 1 order for given month");
     }
 
-    // todo : fix
+    // todo : fix date error
 //    @Test
     void getTotalEarningsForMonth() {
         int year = 2024;
