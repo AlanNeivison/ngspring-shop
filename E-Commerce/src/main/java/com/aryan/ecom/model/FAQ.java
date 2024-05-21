@@ -38,12 +38,12 @@ public class FAQ {
 	private Product product;
 
 	public FAQDto getFAQDto() {
-		FAQDto faqDto = new FAQDto();
-		faqDto.setId(id);
-		faqDto.setQuestion(question);
-		faqDto.setAnswer(answer);
-		faqDto.setProductId(product.getId());
+		return  FAQDto.builder()
+				.id(id)
+				.question(question)
+				.answer(answer)
+				.productId(product.getId())
+				.build();
 
-		return faqDto;
 	}
 }
