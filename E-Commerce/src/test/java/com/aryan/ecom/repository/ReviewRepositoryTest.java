@@ -37,8 +37,11 @@ class ReviewRepositoryTest {
     private User user;
     private Category category;
     private Product product;
+
     @BeforeEach
     void setUp() throws IOException {
+        clearDatabase();
+
         user = User.builder()
                 .email("demoEmail@mail.com")
                 .name("demoName")
@@ -46,7 +49,7 @@ class ReviewRepositoryTest {
                 .role(UserRole.CUSTOMER)
                 .build();
         user = userRepository.save(user);
-        log.info("User Created : {}",user.toString());
+        log.info("User Created : {}", user.toString());
 
 
         category = Category.builder()
@@ -54,7 +57,7 @@ class ReviewRepositoryTest {
                 .description("demoDescription")
                 .build();
         category = categoryRepository.save(category);
-        log.info("Category Created : {}",category.toString());
+        log.info("Category Created : {}", category.toString());
 
 
         MultipartFile mockMultipartFile = new MockMultipartFile("test.jpg", "test.jpg", "image/jpeg", "test image".getBytes());
@@ -66,7 +69,7 @@ class ReviewRepositoryTest {
                 .description("demoDescription")
                 .build();
         product = productRepository.save(product);
-        log.info("Product Created : {}",product.toString());
+        log.info("Product Created : {}", product.toString());
 
         // Adding 2 reviews for same product
         review = Review.builder()
@@ -77,7 +80,7 @@ class ReviewRepositoryTest {
                 .product(product)
                 .build();
         review = reviewRepository.save(review);
-        log.info("Review Created : {}",review.toString());
+        log.info("Review Created : {}", review.toString());
 
 
         review = Review.builder()
@@ -88,27 +91,32 @@ class ReviewRepositoryTest {
                 .product(product)
                 .build();
         review = reviewRepository.save(review);
-        log.info("Review Created : {}",review.toString());
+        log.info("Review Created : {}", review.toString());
 
     }
 
     @AfterEach
     void tearDown() {
-        review=null;
-        product=null;
-        category=null;
-        user=null;
+        clearDatabase();
+    }
+
+    public void clearDatabase() {
+        review = null;
+        product = null;
+        category = null;
+        user = null;
         reviewRepository.deleteAll();
         productRepository.deleteAll();
         categoryRepository.deleteAll();
         userRepository.deleteAll();
     }
 
+
     @Test
     void findAllByProductId() {
         List<Review> reviewList = reviewRepository.findAllByProductId(1L);
-        assertEquals(2,reviewList.size());
-        for (Review r:reviewList){
+        assertEquals(2, reviewList.size());
+        for (Review r : reviewList) {
             assertEquals(product.getId(), r.getProduct().getId());
             assertEquals(user.getId(), r.getUser().getId());
             assertNotNull(r.getDescription());

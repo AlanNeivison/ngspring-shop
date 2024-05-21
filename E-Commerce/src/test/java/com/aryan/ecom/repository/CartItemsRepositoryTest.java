@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @Slf4j
 class CartItemsRepositoryTest {
-// TODO : make order first
 
     @Autowired
     private CartItemsRepository cartItemsRepository;
@@ -48,6 +47,7 @@ class CartItemsRepositoryTest {
 
     @BeforeEach
     void setUp() throws IOException {
+        clearDatabase();
 
         user = User.builder()
                 .email("demoEmail@mail.com")
@@ -58,14 +58,12 @@ class CartItemsRepositoryTest {
         user = userRepository.save(user);
         log.info("User Created : {}", user.toString());
 
-
         category = Category.builder()
                 .name("demoCategory")
                 .description("demoDescription")
                 .build();
         category = categoryRepository.save(category);
         log.info("Category Created : {}", category.toString());
-
 
         MultipartFile mockMultipartFile = new MockMultipartFile("test.jpg", "test.jpg", "image/jpeg", "test image".getBytes());
         product = Product.builder()
@@ -112,12 +110,21 @@ class CartItemsRepositoryTest {
 
     @AfterEach
     void tearDown() {
+        clearDatabase();
+    }
+
+    public void clearDatabase() {
         cartItemsRepository.deleteAll();
+        orderRepository.deleteAll();
+        couponRepository.deleteAll();
+        userRepository.deleteAll();
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @Test
     void findByProductIdAndOrderIdAndUserId() {
-        Optional<CartItems> foundCartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(1L, 1L, 1L);
+        Optional<CartItems> foundCartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(product.getId(), order.getId(), user.getId());
         assertTrue(foundCartItem.isPresent());
         assertEquals(cartItem, foundCartItem.get());
     }

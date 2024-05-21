@@ -182,7 +182,7 @@ public class CartServiceImpl implements CartService {
 				optionalProduct.get().getId(), activeOrder.getId(), addProductInCartDto.getUserId());
 
 		// if product is present
-		if (optionalProduct.isPresent() && optionalCartItem.isPresent()) {
+		if (optionalCartItem.isPresent()) {
 			CartItems cartItems = optionalCartItem.get();
 			Product product = optionalProduct.get();
 
@@ -245,10 +245,7 @@ public class CartServiceImpl implements CartService {
 	
 	public OrderDto searchOrderByTrackingId(UUID trackingId) {
 		Optional<Order> optionalOrder = orderRepository.findByTrackingId(trackingId);
-		if(optionalOrder.isPresent()) {
-			return optionalOrder.get().getOrderDto();
-		}
-		return null;
-	}
+        return optionalOrder.map(Order::getOrderDto).orElse(null);
+    }
 
 }

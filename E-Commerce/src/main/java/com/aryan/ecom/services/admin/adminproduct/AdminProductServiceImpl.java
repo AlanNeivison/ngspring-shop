@@ -7,8 +7,6 @@ import com.aryan.ecom.repository.CategoryRepository;
 import com.aryan.ecom.repository.ProductRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminProductServiceImpl implements AdminProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminProductServiceImpl.class);
     private final ProductRepository productRepository;
 
     private final CategoryRepository categoryRepository;
@@ -57,7 +54,6 @@ public class AdminProductServiceImpl implements AdminProductService {
             productRepository.deleteById(id);
             return true;
         }
-
         return false;
     }
 
@@ -66,25 +62,21 @@ public class AdminProductServiceImpl implements AdminProductService {
         return optionalProduct.map(Product::getDto).orElse(null);
     }
 
-        public ProductDto updateProduct(Long productId, ProductDto productDto) throws IOException {
-            Optional<Product> optionalProduct = productRepository.findById(productId);
-            Optional<Category> optionalCategory = categoryRepository.findById(productDto.getCategoryId());
-            if (optionalProduct.isPresent() && optionalCategory.isPresent()) {
-                Product product = optionalProduct.get();
-                product.setName(productDto.getName());
-                product.setPrice(productDto.getPrice());
-                product.setDescription(productDto.getDescription());
-                product.setCategory(optionalCategory.get());
+    public ProductDto updateProduct(Long productId, ProductDto productDto) throws IOException {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Optional<Category> optionalCategory = categoryRepository.findById(productDto.getCategoryId());
 
-                productDto.setId(product.getId());
+        if (optionalProduct.isPresent() && optionalCategory.isPresent()) {
+            Product product = optionalProduct.get().toBuilder()
+                    .name(productDto.getName())
+                    .price(productDto.getPrice())
+                    .description(productDto.getDescription())
+                    .category(optionalCategory.get())
+                    .img(productDto.getByteImg() != null ? productDto.getByteImg() : null)
+                    .build();
+            return productRepository.save(product).getDto();
+        }
 
-                // check if image is provided
-                if (productDto.getByteImg() != null) {
-                    product.setImg(productDto.getByteImg());
-                }
-                return productRepository.save(product).getDto();
-            } else {
-                return null;
-            }
+        return null;
     }
 }
