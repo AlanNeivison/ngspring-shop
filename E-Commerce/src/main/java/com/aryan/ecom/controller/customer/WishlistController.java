@@ -19,13 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/customer")
-public class WishlistContoller {
+public class WishlistController {
 	private final WishlistService wishlistService;
 	
 	@PostMapping("/wishlist")
 	public ResponseEntity<?> addProductToWishlist(@RequestBody WishlistDto wishlistDto){
 		WishlistDto posteWishlistDto = wishlistService.addProductToWishlist(wishlistDto);
-		if(posteWishlistDto==null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("somewhing went wrong");
+		if(posteWishlistDto==null) return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("something went wrong");
 		return ResponseEntity.status(HttpStatus.CREATED).body(posteWishlistDto);
 	}
 	

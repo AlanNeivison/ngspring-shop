@@ -6,6 +6,7 @@ import com.aryan.ecom.enums.OrderStatus;
 import com.aryan.ecom.model.Order;
 import com.aryan.ecom.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminOrderServiceImpl implements AdminOrderService {
     private final OrderRepository orderRepository;
 
@@ -64,6 +66,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date startOfMonth = calendar.getTime();
 
         // set time on last day of month
@@ -74,7 +77,6 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         Date endOfMonth = calendar.getTime();
 
         List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(startOfMonth, endOfMonth, OrderStatus.Delivered);
-
         return (long) orders.size();
 
     }
@@ -87,6 +89,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date startOfMonth = calendar.getTime();
 
         // set time on last day of month
