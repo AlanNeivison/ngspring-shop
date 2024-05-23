@@ -26,6 +26,7 @@ public class AdminOrderController {
 		return ResponseEntity.ok(adminOrderService.getAllPlacedOrders());
 	}
 
+	// TODO : fix ( use @PutMapping which is more semantically correct for updating resources )
 	@GetMapping("/order/{orderId}/{status}")
 	public ResponseEntity<?> changeOrderStatus(@PathVariable Long orderId, @PathVariable String status) {
 		OrderDto orderDto = adminOrderService.changeOrderStatus(orderId, status);
