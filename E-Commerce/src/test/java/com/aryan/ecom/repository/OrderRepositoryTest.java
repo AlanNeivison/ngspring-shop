@@ -151,7 +151,14 @@ class OrderRepositoryTest {
     @Test
     void findByDateBetweenAndOrderStatus() {
         Date startOfMonth = new Date();
-        List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(startOfMonth, new Date(startOfMonth.getTime() + (3600 * 24 * 30)), OrderStatus.Delivered);
+        List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(new Date(startOfMonth.getTime()-(3600*24)), new Date(startOfMonth.getTime() + (3600 * 24 * 30)), OrderStatus.Delivered);
+        assertTrue(orders.contains(order));
+    }
+
+    @Test
+    void findByDateBetweenAndOrderStatus_OrderNotInDateRange() {
+        Date startOfMonth = new Date();
+        List<Order> orders = orderRepository.findByDateBetweenAndOrderStatus(new Date(startOfMonth.getTime()+(3600*24)), new Date(startOfMonth.getTime() + (3600 * 24 * 30)), OrderStatus.Delivered);
         assertFalse(orders.contains(order));
     }
 
