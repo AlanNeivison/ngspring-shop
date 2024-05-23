@@ -40,11 +40,7 @@ public class AuthController {
 
 	private final JwtUtil jwtUtil;
 
-	private final String TOKEN_PREFIX = "Bearer ";
-
-	private final String HEADER_STRING = "Authorization";
-
-	private final AuthService authService;
+    private final AuthService authService;
 
 	@PostMapping("/authenticate")
 	public void createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,
@@ -55,7 +51,6 @@ public class AuthController {
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new BadCredentialsException("incorrect user or pass");
 		}
 
@@ -72,7 +67,9 @@ public class AuthController {
 						+ "X-Requested-With, Content-Type, Accent, X-Custom-header");
 			} catch (Exception e) {
 			}
-			response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
+            String TOKEN_PREFIX = "Bearer ";
+            String HEADER_STRING = "Authorization";
+            response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
 			log.info("USER TOKEN GENERATED : {} ", jwt);
 		}
 
