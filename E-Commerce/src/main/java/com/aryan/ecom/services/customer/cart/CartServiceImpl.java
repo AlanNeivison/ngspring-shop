@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,22 +30,23 @@ import com.aryan.ecom.repository.ProductRepository;
 import com.aryan.ecom.repository.UserRepository;
 
 @Service
+@AllArgsConstructor
 public class CartServiceImpl implements CartService {
 
 	@Autowired
-	private OrderRepository orderRepository;
+	private final OrderRepository orderRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
-	private CartItemsRepository cartItemsRepository;
+	private final CartItemsRepository cartItemsRepository;
 
 	@Autowired
-	private ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
 	@Autowired
-	private CouponRepository couponRepository;
+	private final CouponRepository couponRepository;
 
 	public ResponseEntity<?> addProductToCart(AddProductInCartDto addProductInCartDto) {
 
@@ -73,7 +75,7 @@ public class CartServiceImpl implements CartService {
 				cartItems.setPrice(optionalProduct.get().getPrice());
 				cartItems.setQuantity(1L);
 				cartItems.setUser(optionalUser.get());
-				
+
 				cartItems.setOrder(activeOrder);
 
 				CartItems updatedCart = cartItemsRepository.save(cartItems);
@@ -149,7 +151,7 @@ public class CartServiceImpl implements CartService {
 		Optional<CartItems> optionalCartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
 				optionalProduct.get().getId(), activeOrder.getId(), addProductInCartDto.getUserId());
 
-		if (optionalProduct.isPresent() && optionalCartItem.isPresent()) {
+		if (optionalCartItem.isPresent()) {
 			CartItems cartItems = optionalCartItem.get();
 			Product product = optionalProduct.get();
 
@@ -242,7 +244,7 @@ public class CartServiceImpl implements CartService {
 						List.of(OrderStatus.Shipped, OrderStatus.Placed, OrderStatus.Delivered))
 				.stream().map(Order::getOrderDto).collect(Collectors.toList());
 	}
-	
+
 	public OrderDto searchOrderByTrackingId(UUID trackingId) {
 		Optional<Order> optionalOrder = orderRepository.findByTrackingId(trackingId);
         return optionalOrder.map(Order::getOrderDto).orElse(null);
