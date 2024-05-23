@@ -73,7 +73,7 @@ class ReviewControllerTest {
 
         mockMvc.perform(post("/api/customer/review")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .flashAttr("reviewDto", reviewDto))
+                        .content(objectMapper.writeValueAsBytes(reviewDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").doesNotExist());
     }
