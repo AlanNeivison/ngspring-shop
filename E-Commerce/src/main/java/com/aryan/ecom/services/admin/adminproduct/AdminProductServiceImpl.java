@@ -7,6 +7,8 @@ import com.aryan.ecom.repository.CategoryRepository;
 import com.aryan.ecom.repository.ProductRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminProductServiceImpl implements AdminProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminProductServiceImpl.class);
     private final ProductRepository productRepository;
 
     private final CategoryRepository categoryRepository;
@@ -72,9 +75,10 @@ public class AdminProductServiceImpl implements AdminProductService {
                     .price(productDto.getPrice())
                     .description(productDto.getDescription())
                     .category(optionalCategory.get())
-                    .img(productDto.getByteImg() != null ? productDto.getByteImg() : null)
+                    .img(productDto.getByteImg() != null ? productDto.getByteImg() : optionalProduct.get().getImg())
                     .build();
-            return productRepository.save(product).getDto();
+            Product savedProduct = productRepository.save(product);
+            return savedProduct.getDto();
         }
 
         return null;

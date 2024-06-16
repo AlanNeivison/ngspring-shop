@@ -74,11 +74,10 @@ public class AdminProductController {
 	public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productId,@ModelAttribute ProductDto productDto) throws IOException {
 		ProductDto updatedProduct = adminProductService.updateProduct(productId,productDto);
 		if (updatedProduct != null) {
-			return ResponseEntity.ok(productDto);
+			return ResponseEntity.ok(updatedProduct);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-
 	}
 
 }

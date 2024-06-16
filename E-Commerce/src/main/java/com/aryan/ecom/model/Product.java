@@ -41,13 +41,13 @@ public class Product {
     //	TODO  : add mapstruct
     public ProductDto getDto() {
         return ProductDto.builder()
-                .id(id)
-                .name(name)
-                .price(price)
-                .description(description)
-                .byteImg(img)
-                .categoryId(category.getId())
-                .categoryName(category.getName())
+                .id(this.id)  // Ensure the ID is being correctly assigned here
+                .name(this.name)
+                .price(this.price)
+                .description(this.description)
+                .byteImg(this.img)
+                .categoryId(this.category.getId())
+                .categoryName(this.category.getName())
                 .build();
     }
 
