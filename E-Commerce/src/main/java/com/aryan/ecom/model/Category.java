@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 // TODO : Change table name
-@Table(name="categoty")
+@Table(name="category")
 @Data
 @NoArgsConstructor
 public class Category {
