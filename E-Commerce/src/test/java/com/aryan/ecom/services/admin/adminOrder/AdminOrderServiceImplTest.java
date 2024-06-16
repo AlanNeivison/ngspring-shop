@@ -171,11 +171,11 @@ class AdminOrderServiceImplTest {
 
     @Test
     void calculateAnalytics() {
-        int year = 2024;
-        Date[] currentMonthRange = getDateRangeForMonth(Calendar.MAY, year);
-        Date[] previousMonthRange = getDateRangeForMonth(Calendar.APRIL, year);
+        // Used Current month and year because implementation uses LocalDate.now()
+        Date[] currentMonthRange = getDateRangeForMonth(Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
+        Date[] previousMonthRange = getDateRangeForMonth(Calendar.getInstance().get(Calendar.MONTH)-1, Calendar.getInstance().get(Calendar.YEAR));
 
-        Order deliveredOrderCurrentMonth = createMockOrder(1L, new Date(), OrderStatus.Delivered);
+        Order deliveredOrderCurrentMonth = createMockOrder(1L, currentMonthRange[0], OrderStatus.Delivered);
         Order deliveredOrderPreviousMonth = createMockOrder(2L, previousMonthRange[0], OrderStatus.Delivered);
         List<Order> currentMonthOrders = Collections.singletonList(deliveredOrderCurrentMonth);
         List<Order> previousMonthOrders = Collections.singletonList(deliveredOrderPreviousMonth);
