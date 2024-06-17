@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @Builder
-// TODO : Change table name
 @Table(name="category")
 @Data
 @NoArgsConstructor

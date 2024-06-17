@@ -3,10 +3,7 @@ package com.aryan.ecom.controller.admin;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.aryan.ecom.dto.AnalyticsResponse;
 import com.aryan.ecom.dto.OrderDto;
@@ -26,8 +23,7 @@ public class AdminOrderController {
 		return ResponseEntity.ok(adminOrderService.getAllPlacedOrders());
 	}
 
-	// TODO : fix ( use @PutMapping which is more semantically correct for updating resources )
-	@GetMapping("/order/{orderId}/{status}")
+	@PutMapping("/order/{orderId}/{status}")
 	public ResponseEntity<?> changeOrderStatus(@PathVariable Long orderId, @PathVariable String status) {
 		OrderDto orderDto = adminOrderService.changeOrderStatus(orderId, status);
 		if (orderDto == null)

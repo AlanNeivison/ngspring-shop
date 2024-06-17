@@ -81,7 +81,7 @@ export class AdminService {
   } 
 
   changeOrderStatus(orderId:number,status:string): Observable<any> {
-    return this.http.get(BASIC_URL + `api/admin/order/${orderId}/${status}`, {
+    return this.http.put(BASIC_URL + `api/admin/order/${orderId}/${status}`, {
       headers: this.createAuthorizationHeader()
     });
   } 

@@ -28,7 +28,7 @@ public class Product {
     private String description;
 
     @Lob
-    @Column(columnDefinition = "longblob")
+    @Column(columnDefinition = "mediumblob")        // current limit : 16MB____use longblob for 4gb size (postgres)
     private byte[] img;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
