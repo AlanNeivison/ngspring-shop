@@ -13,7 +13,7 @@
 
         <ng-container matColumnDef="description">
             <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: blue;">Description</mat-header-cell>
-            <mat-cell *matCellDef="let myOrder">{{myOrder.description}}</mat-cell>
+            <mat-cell *matCellDef="let myOrder">{{myOrder.orderDescription}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="address">
@@ -32,7 +32,7 @@
         </ng-container>
 
         <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef style="fo nt-weight: bolder; color: blue;">Action</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: blue;">Action</mat-header-cell>
             <mat-cell *matCellDef="let myOrder">
                 <span *ngIf="myOrder.orderStatus == 'Delivered'">
                     <button mat-raised-button color="primary" type="submit"
