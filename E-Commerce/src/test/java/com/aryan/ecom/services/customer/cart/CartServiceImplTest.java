@@ -189,13 +189,15 @@ class CartServiceImplTest {
         Order order = createMockOrder(1L);
         order.setOrderStatus(OrderStatus.Placed);
 
-        when(orderRepository.save(any(Order.class))).thenReturn(null);      // creating empty order
+        when(orderRepository.save(any(Order.class))).thenReturn(Order.builder().user(User.builder().id(1L).build()).build());      // creating empty order
 
         OrderDto orderDto = cartService.placedOrder(PlaceOrderDto.builder().userId(1L)
                 .orderDescription("demodesc")
                 .address("addr")
                 .build());
         assertEquals(OrderStatus.Placed, orderDto.getOrderStatus());
+        log.info(orderDto.toString());
+        assertEquals(1L,orderDto.getId());
 
 
     }

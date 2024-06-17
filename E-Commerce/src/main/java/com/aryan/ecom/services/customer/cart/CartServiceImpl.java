@@ -7,6 +7,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,7 @@ import com.aryan.ecom.repository.UserRepository;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService {
 
 	@Autowired
@@ -55,8 +59,11 @@ public class CartServiceImpl implements CartService {
 		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(addProductInCartDto.getUserId(),
 				OrderStatus.Pending);
 
-		if (activeOrder == null)
+		if (activeOrder == null) {
+			log.info("active order not found");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order is empty");
+
+		}
 
 		// check if that same product is already present for that particular user
 		Optional<CartItems> optionalCartItems = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
@@ -213,26 +220,40 @@ public class CartServiceImpl implements CartService {
 
 	public OrderDto placedOrder(PlaceOrderDto placeOrderDto) {
 		Order activeOrder = orderRepository.findByUserIdAndOrderStatus(placeOrderDto.getUserId(), OrderStatus.Pending);
+
+		if (activeOrder == null) {
+			log.info("There is no active pending order for the user with userId: {}", placeOrderDto.getUserId());
+			return null;
+		}
+
 		Optional<User> optionalUser = userRepository.findById(placeOrderDto.getUserId());
 		if (optionalUser.isPresent()) {
 			activeOrder.setOrderDescription(placeOrderDto.getOrderDescription());
-			// debug
-			System.out.println(placeOrderDto.getOrderDescription());
+
+			// Update the active order with the new details
 			activeOrder.setAddress(placeOrderDto.getAddress());
 			activeOrder.setDate(new Date());
 			activeOrder.setOrderStatus(OrderStatus.Placed);
 			activeOrder.setTrackingId(UUID.randomUUID());
 
+			// Save the updated order
 			orderRepository.save(activeOrder);
+			log.info("Updated order saved with ID: {}", activeOrder.getId());
 
-			Order order = new Order();
-			order.setAmount(0L);
-			order.setTotalAmount(0L);
-			order.setDiscount(0L);
-			order.setUser(optionalUser.get());
-			order.setOrderStatus(OrderStatus.Pending);
-			orderRepository.save(order);
 
+			// Create a new empty pending order for the user
+			Order newOrder = new Order();
+			newOrder.setAmount(0L);
+			newOrder.setTotalAmount(0L);
+			newOrder.setDiscount(0L);
+			newOrder.setUser(optionalUser.get());
+			newOrder.setOrderStatus(OrderStatus.Pending);
+
+			// Save the new pending order
+			orderRepository.save(newOrder);
+			log.info("new pending order created : {}",newOrder.toString());
+
+			// Return the DTO of the active order
 			return activeOrder.getOrderDto();
 		}
 		return null;
