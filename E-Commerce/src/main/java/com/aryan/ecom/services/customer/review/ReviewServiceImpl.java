@@ -63,7 +63,8 @@ public class ReviewServiceImpl implements ReviewService {
             review.setRating(reviewDto.getRating());
             review.setUser(optionalUser.get());
             review.setProduct(optionalProduct.get());
-            review.setImg(reviewDto.getImg().getBytes());
+            System.out.println(reviewDto.getImg());
+            review.setImg(reviewDto.getImg() != null ? reviewDto.getImg().getBytes() : null);
 
             return reviewRepository.save(review).getDto();
         }
