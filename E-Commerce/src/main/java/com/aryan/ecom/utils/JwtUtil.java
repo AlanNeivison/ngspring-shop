@@ -21,7 +21,7 @@ import io.jsonwebtoken.security.Keys;
 @Slf4j
 public class JwtUtil {
 	public static final String SECRET = "THISISAVEERYLONGANDSECURESECRETKEYFORJWTGENERATIONBYARYANPATIL1"
-	        + "THISISAVEERYLONGANDSECURESECRETKEYFORJWTGENERATIONBYARYANPATIL2";
+			+ "THISISAVEERYLONGANDSECURESECRETKEYFORJWTGENERATIONBYARYANPATIL2";
 
 	public String generateToken(String userName) {
 		Map<String, Object> claims = new HashMap<>();
@@ -29,6 +29,7 @@ public class JwtUtil {
 	}
 
 	private String createToken(Map<String, Object> claims, String userName) {
+		log.info("Generating token for user: {}", userName);
 		return Jwts.builder().setClaims(claims).setSubject(userName).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 10000 * 60 * 30))
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
@@ -49,7 +50,6 @@ public class JwtUtil {
 	}
 
 	private Claims extractAllClaims(String token) {
-
 		return Jwts.parser().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
 	}
 
@@ -63,7 +63,8 @@ public class JwtUtil {
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = extractUsername(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		boolean isValid = username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+		log.info("Token validation result for user {}: {}", username, isValid);
+		return isValid;
 	}
-
 }

@@ -34,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final OrderRepository orderRepository;
 
     public UserDto createUser(SignupRequest signupRequest) {
+        log.info("Creating user with email: {}", signupRequest.getEmail());
 
         User createdUser = userRepository.save(User.builder()
                 .email(signupRequest.getEmail())
@@ -63,18 +64,18 @@ public class AuthServiceImpl implements AuthService {
 
     @PostConstruct
     public void createAdminAccount() {
-        log.info("Running application for first time creates an Admin account with default info");
+        log.info("Running application for the first time creates an Admin account with default info");
         Optional<User> adminAccountUser = userRepository.findByRole(UserRole.ADMIN);
         if (adminAccountUser.isEmpty()) {
-            log.info("Admin account created !! with email : admin@gmail.com and pass : admin");
-           userRepository.save(
-            User.builder()
-                    .email("admin@gmail.com")
-                    .name("admin")
-                    .role(UserRole.ADMIN)
-                    .password(bEncoder.encode("admin"))
-                    .build()
-           );
+            log.info("Admin account created with email: admin@gmail.com and password: admin");
+            userRepository.save(
+                    User.builder()
+                            .email("admin@gmail.com")
+                            .name("admin")
+                            .role(UserRole.ADMIN)
+                            .password(bEncoder.encode("admin"))
+                            .build()
+            );
         }
     }
 

@@ -2,6 +2,7 @@ package com.aryan.ecom.filters;
 
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	private final UserDetailsServiceImpl userDetailsService;
@@ -36,16 +38,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			token = authHeader.substring(7);
 			username = jwtUtil.extractUsername(token);
 		}
-		
+
 		if(username!=null&& SecurityContextHolder.getContext().getAuthentication()==null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-			
+
 			if(jwtUtil.validateToken(token, userDetails)) {
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null);
 				authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				log.info("User authenticated successfully: {}", username);
+			} else {
+				log.warn("Invalid token for user: {}", username);
 			}
 		}
+
 		filterChain.doFilter(request, response);
 	}
 

@@ -5,11 +5,8 @@ import com.aryan.ecom.model.Category;
 import com.aryan.ecom.model.Product;
 import com.aryan.ecom.repository.CategoryRepository;
 import com.aryan.ecom.repository.ProductRepository;
-import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +22,8 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     private final CategoryRepository categoryRepository;
 
-
     public ProductDto addProduct(ProductDto productDto) throws Exception {
+        log.info("Adding a new product: {}", productDto.getName());
         Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow();
 
         Product product = Product.builder()
@@ -43,16 +40,19 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     public List<ProductDto> getAllProducts() {
+        log.info("Fetching all products.");
         List<Product> products = productRepository.findAll();
         return products.stream().map(Product::getDto).collect(Collectors.toList());
     }
 
     public List<ProductDto> getAllProductsByName(String name) {
+        log.info("Fetching all products by name: {}", name);
         List<Product> products = productRepository.findAllByNameContaining(name);
         return products.stream().map(Product::getDto).collect(Collectors.toList());
     }
 
     public boolean deleteProduct(Long id) {
+        log.info("Deleting product with ID: {}", id);
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             productRepository.deleteById(id);
@@ -62,11 +62,13 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     public ProductDto getProductById(Long productId) {
+        log.info("Fetching product with ID: {}", productId);
         Optional<Product> optionalProduct = productRepository.findById(productId);
         return optionalProduct.map(Product::getDto).orElse(null);
     }
 
-    public ProductDto updateProduct(Long productId, ProductDto productDto) throws IOException {
+    public ProductDto updateProduct(Long productId, ProductDto productDto) {
+        log.info("Updating product with ID: {}", productId);
         Optional<Product> optionalProduct = productRepository.findById(productId);
         Optional<Category> optionalCategory = categoryRepository.findById(productDto.getCategoryId());
 

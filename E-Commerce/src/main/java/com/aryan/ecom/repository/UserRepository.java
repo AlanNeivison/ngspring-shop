@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findFirstByEmail(String email);
 
-    // Used to check of ADMIN exists
+    // Only Used to check of ADMIN exists (running for first time)
     Optional<User> findByRole(UserRole userRole);
 
 }

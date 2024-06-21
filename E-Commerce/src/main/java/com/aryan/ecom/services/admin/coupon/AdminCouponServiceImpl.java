@@ -15,18 +15,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Slf4j
 public class AdminCouponServiceImpl implements AdminCouponService {
-	private final CouponRepository couponRepository; 
-	
+	private final CouponRepository couponRepository;
+
 	public Coupon createCoupon(Coupon coupon) {
 		if(couponRepository.existsByCode(coupon.getCode())) {
 			throw new ValidationException("Coupon code already exists");
-		}else {
-			log.info("New Coupon Code Added: {}",coupon.getCode());
+		} else {
+			log.info("New Coupon Code Added: {}", coupon.getCode());
 			return couponRepository.save(coupon);
 		}
 	}
-	
-	public List<Coupon> getAllCoupon(){
+
+	public List<Coupon> getAllCoupon() {
+		log.info("Fetching all coupons.");
 		return couponRepository.findAll();
 	}
 }

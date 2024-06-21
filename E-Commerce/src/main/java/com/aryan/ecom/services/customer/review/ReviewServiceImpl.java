@@ -9,6 +9,7 @@ import com.aryan.ecom.repository.ProductRepository;
 import com.aryan.ecom.repository.ReviewRepository;
 import com.aryan.ecom.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,13 +19,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewServiceImpl implements ReviewService {
     private final OrderRepository orderRepository;
-
     private final ProductRepository productRepository;
-
     private final UserRepository userRepository;
-
     private final ReviewRepository reviewRepository;
 
     public OrderedProductsResponseDto getOrderedProductsDetailsByOrderId(Long orderId) {
@@ -43,12 +42,12 @@ public class ReviewServiceImpl implements ReviewService {
                         .byteImg(cartItems.getProduct().getImg())
                         .build();
 
-
                 productDtoList.add(productDto);
             }
 
             orderedProductsResponseDto.setProductDtoList(productDtoList);
         }
+        log.info("Retrieved ordered products details for order ID: {}", orderId);
         return orderedProductsResponseDto;
     }
 
@@ -63,12 +62,15 @@ public class ReviewServiceImpl implements ReviewService {
             review.setRating(reviewDto.getRating());
             review.setUser(optionalUser.get());
             review.setProduct(optionalProduct.get());
-            System.out.println(reviewDto.getImg());
-            review.setImg(reviewDto.getImg() != null ? reviewDto.getImg().getBytes() : null);
+            log.info("Review details set for user ID: {} and product ID: {}", reviewDto.getUserId(), reviewDto.getProductId());
+
+            if (reviewDto.getImg() != null) {
+                review.setImg(reviewDto.getImg().getBytes());
+            }
 
             return reviewRepository.save(review).getDto();
         }
+        log.error("Failed to give review. Product or user not found.");
         return null;
     }
-
 }

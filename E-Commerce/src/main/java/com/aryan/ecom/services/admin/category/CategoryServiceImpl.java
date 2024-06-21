@@ -2,6 +2,7 @@ package com.aryan.ecom.services.admin.category;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.aryan.ecom.dto.CategoryDto;
@@ -12,12 +13,13 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
-	
-	private final CategoryRepository categoryRepository;
-	
-	public Category createCategory(CategoryDto categoryDto) {
 
+	private final CategoryRepository categoryRepository;
+
+	public Category createCategory(CategoryDto categoryDto) {
+		log.info("Creating a new category: {}", categoryDto.getName());
 		return categoryRepository.save(
 				Category.builder()
 						.name(categoryDto.getName())
@@ -25,10 +27,9 @@ public class CategoryServiceImpl implements CategoryService {
 						.build()
 		);
 	}
-	
-	public List<Category> getAllCategory(){
+
+	public List<Category> getAllCategory() {
+		log.info("Fetching all categories.");
 		return categoryRepository.findAll();
 	}
-	
-	
 }

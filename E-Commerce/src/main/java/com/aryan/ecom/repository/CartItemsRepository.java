@@ -11,4 +11,5 @@ import com.aryan.ecom.model.CartItems;
 public interface CartItemsRepository extends JpaRepository<CartItems, Long>{
 	
 	Optional<CartItems> findByProductIdAndOrderIdAndUserId(Long productId,Long orderId,Long userId);
+
 }
