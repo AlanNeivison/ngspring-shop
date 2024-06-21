@@ -85,7 +85,7 @@ class WishlistControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(wishlistDto)))
                 .andExpect(status().isBadGateway())
-                .andExpect(content().string("something went wrong"));
+                .andExpect(content().string("Something went wrong"));
     }
 
     @Test

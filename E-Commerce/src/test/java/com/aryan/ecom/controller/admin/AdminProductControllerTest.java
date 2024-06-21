@@ -5,7 +5,6 @@ import com.aryan.ecom.dto.ProductDto;
 import com.aryan.ecom.filters.JwtRequestFilter;
 import com.aryan.ecom.services.admin.adminproduct.AdminProductService;
 import com.aryan.ecom.services.admin.faq.FAQService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -38,18 +37,15 @@ class AdminProductControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
-    // TO satisfy dependency requirements
-    @MockBean
-    private JwtRequestFilter jwtRequestFilter;
-
     @MockBean
     AdminProductService adminProductService;
     @MockBean
     FAQService faqService;
-
     ObjectMapper objectMapper;
     ProductDto productDto;
+    // TO satisfy dependency requirements
+    @MockBean
+    private JwtRequestFilter jwtRequestFilter;
 
     @BeforeEach
     void setUp() {
@@ -67,15 +63,19 @@ class AdminProductControllerTest {
 
     @Test
     void addProduct() throws Exception {
-
-        when(adminProductService.addProduct(productDto)).thenReturn(productDto);
+        when(adminProductService.addProduct(any(ProductDto.class))).thenReturn(ProductDto.builder()
+                .id(1L)
+                .name("demoName")
+                .price(500L)
+                .categoryName("demoCategory")
+                .build());
 
         mockMvc.perform(post("/api/admin/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(productDto)))
                 .andDo(print()).andExpect(status().isCreated());
-
     }
+
 
     @Test
     void getAllProduct() throws Exception {
@@ -158,9 +158,9 @@ class AdminProductControllerTest {
         when(adminProductService.updateProduct(eq(1L), any(ProductDto.class))).thenReturn(ProductDto.builder().name("updatedName").price(1000L).categoryName("updatedCategory").build());
 
         mockMvc.perform(put("/api/admin/product/1")
-                .param("name", "updatedName")
-                .param("price", "1000")
-                .param("categoryName", "updatedCategory"))
+                        .param("name", "updatedName")
+                        .param("price", "1000")
+                        .param("categoryName", "updatedCategory"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("updatedName"))
