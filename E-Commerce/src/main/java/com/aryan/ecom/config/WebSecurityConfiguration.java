@@ -1,5 +1,6 @@
 package com.aryan.ecom.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @EnableWebMvc
 @RequiredArgsConstructor
+@Slf4j
 public class WebSecurityConfiguration {
 
 	private final JwtRequestFilter jwtRequestFilter;
-	
 
 	@Bean
 	MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
@@ -36,34 +37,43 @@ public class WebSecurityConfiguration {
 	@SuppressWarnings("deprecation")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+		log.info("Configuring security filter chain");
 
-		return http.csrf(csrf -> csrf.disable())
-	            .authorizeRequests(auth -> auth
-	            		.requestMatchers(mvc.pattern("/authenticate"),
-	            				mvc.pattern("/sign-up"),
-	            				mvc.pattern("/order/**"),
-	            				mvc.pattern("/v3/api-docs"),
-	            				mvc.pattern("/swagger-resources/**"),
-	            				mvc.pattern("/swagger-ui/**"),
-	            				mvc.pattern("/webjars/**")).permitAll()
-	            		.requestMatchers(mvc.pattern(".api/**")).authenticated()
-	            )
-	            .sessionManagement(sessionManagement -> sessionManagement
-	                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	            )
-	            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-	            .build();	
-		
+		http.csrf(csrf -> {
+			log.info("Disabling CSRF protection");
+			csrf.disable();
+		});
+
+		http.authorizeRequests(auth -> {
+			log.info("Configuring authorization rules");
+			auth.requestMatchers(
+							mvc.pattern("/authenticate"),
+							mvc.pattern("/sign-up"),
+							mvc.pattern("/order/**"),
+							mvc.pattern("/v3/api-docs"),
+							mvc.pattern("/swagger-resources/**"),
+							mvc.pattern("/swagger-ui/**"),
+							mvc.pattern("/webjars/**")
+					).permitAll()
+					.requestMatchers(mvc.pattern(".api/**")).authenticated();
+		});
+
+		http.sessionManagement(sessionManagement -> {
+			sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		});
+
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
 	}
-
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
 }
