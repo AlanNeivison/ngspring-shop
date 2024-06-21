@@ -70,7 +70,6 @@ class AdminProductControllerTest {
 
         when(adminProductService.addProduct(productDto)).thenReturn(productDto);
 
-
         mockMvc.perform(post("/api/admin/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(productDto)))
@@ -156,7 +155,7 @@ class AdminProductControllerTest {
 
     @Test
     void updateProduct() throws Exception {
-        when(adminProductService.updateProduct(eq(1L), any(ProductDto.class))).thenReturn(productDto);
+        when(adminProductService.updateProduct(eq(1L), any(ProductDto.class))).thenReturn(ProductDto.builder().name("updatedName").price(1000L).categoryName("updatedCategory").build());
 
         mockMvc.perform(put("/api/admin/product/1")
                 .param("name", "updatedName")

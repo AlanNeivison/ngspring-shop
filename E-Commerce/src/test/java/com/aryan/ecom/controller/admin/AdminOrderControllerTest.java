@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AdminOrderController.class)
@@ -73,7 +74,7 @@ class AdminOrderControllerTest {
         when(adminOrderService.changeOrderStatus(orderId, status)).thenReturn(OrderDto.builder().id(orderId).orderStatus(OrderStatus.Shipped).build());
 
         // Act & Assert
-        mockMvc.perform(get("/api/admin/order/" + orderId + "/" + status)
+        mockMvc.perform(put("/api/admin/order/" + orderId + "/" + status)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(orderId))
