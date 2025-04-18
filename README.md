@@ -53,10 +53,6 @@ This E-Commerce project is built with Angular for the frontend and Spring Boot f
 
 Contributions are welcome! Please follow the guidelines in the `CONTRIBUTING.md` file.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE.md).
-
 ## Acknowledgments
 
 - Thanks to the Angular, Spring Boot, and MySQL communities for providing excellent documentation and support.
